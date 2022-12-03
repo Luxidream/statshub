@@ -1,0 +1,35 @@
+---
+title: "Introduction to luxipackage"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction to luxipackage}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Introduction
+
+Hi! This is a vignette file for my MATH 4753 class. It demonstrates functionality of the four functions that I included from the assignments this year.
+
+You can read about the functionality of each function in its original documentation. The numbering is unusual to distinguish it from the original functions when I was submitting them as part of the labs.
+
+# Demonstration
+
+```{r setup, echo=FALSE}
+library(luxipackage)
+
+#Adjusting the size of the plotting window so the plots display in the R markdown file
+
+par(mar = c(2, 2, 2, 2))
+mymlnorm2(x=c(5,7,7,8,10),mu=seq(5,10,length=1000),sig=seq(0.1,4,length=1000),lwd=2,labcex=1)
+myboot3(10000,x=c(1,2,3),fun="var",alpha=0.05,xlab="var",col="Purple",cx=1.5)
+myclt2(n=10, iter=10000)
+ntickets(200, .02, .95)
+```

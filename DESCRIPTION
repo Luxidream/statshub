@@ -1,0 +1,17 @@
+Package: luxipackage
+Type: Package
+Title: Package for Stats (MATH 4753)
+Version: 0.1.0
+Author: Dzuy Nguyen
+Maintainer: Dzuy Nguyen <dzuynguyen219@gmail.com>
+Description: It has three functions - for now!
+License: GPL-2
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.2.1
+Depends: 
+    R (>= 2.10)
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr

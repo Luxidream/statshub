@@ -1,0 +1,264 @@
+---
+title: 'ASS 4 (10/10)'
+author: "Dzuy Nguyen"
+date: '`r format(Sys.Date(),format="%A, %B %d, %Y")`'
+output: 
+  html_document:
+    fig_caption: true
+    highlights: pygments
+    number_sections: no
+    theme: spacelab
+    toc: yes
+    toc_float: yes
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# Problem 1 
+
+```{r}
+data <- read.csv("NZBIRDS.csv")
+p = sample(data$BodyMass,size=35, replace=FALSE)
+mean(p)
+sd(p)
+
+#Confidence interval lower
+mean(p) -  2 * sd(p)
+#Confidence interval upper
+mean(p) + 2 * sd(p)
+
+```
+We are 95% confident the population mean is somewhere between 0 and the above number of grams.
+
+The interval contains the true mean because it is 95% likely to contain the true mean.
+
+```{r}
+data <- read.csv("NZBIRDS.csv")
+data$EggLength
+
+p = sample(data$EggLength ,size=35, replace=FALSE)
+p = na.omit(p)
+
+mean(p)
+sd(p)
+
+#Confidence interval lower
+mean(p) -  2 * sd(p)
+#Confidence interval upper
+mean(p) + 2 * sd(p)
+```
+
+We are 95% confident the population mean egg length is somewhere between 0 and the above number of mm.
+
+The true mean is included as before, and is very likely to be included.
+
+```{r}
+prop.test(x = c(21, 7), n = c(38, 78))
+```
+
+The 95% confidence interval does not include nonextinct, which suggests that the difference is statistically signiicant and supports the theory.
+
+# Problem 2
+
+$(y_{1} -y_{2}) ± z (\frac{s_{1}^2}{n_{1}} +\frac{s_{1}^2}{n_{2}})^{0.5}$
+
+$= (1312-1352) ± 1.645 (\frac{422^2}{100}+\frac{271^2}{47})^{0.5}$
+
+$=(-135.118, 55.118)$
+
+Variances:
+
+$\frac{422^2}{271^2} * \frac{1}{1.54} < ratio < \frac{422^2}{271^2} * 1.491$
+
+$1.566 <= \frac{\sigma_1^2}{\sigma_2^2} <= 3.618$
+
+# Problem 3
+
+$Z = \frac{Y - \mu}{\sigma} = \frac{Y}{\sigma}$
+$Z^2 = \frac{Y^2}{\sigma^2}$
+
+This is equivalent to chi squared with degree 1.
+
+B.
+
+$P(\chi^2_{1-\alpha/2} <= \frac{Y^2}{\sigma^2} <= \chi^2_{1-\alpha/2})$
+
+$=P(1/\chi^2_{1-\alpha/2} >= \frac{\sigma^2}{Y^2} >= 1/\chi^2_{1-\alpha/2})$
+
+$=P(Y^2/\chi^2_{1-\alpha/2} >= \frac{\sigma^2}{Y^2} >= Y^2\chi^2_{1-\alpha/2})$
+
+$=P(Y^2/\chi^2_{\alpha/2} <= \frac{\sigma^2}{Y^2} <= Y^2\chi^2_{1-\alpha/2})$
+
+# Problem 4
+
+Null hypothesis: mu = 2
+
+Alternative: mu does not equal 2
+
+Test statistic : T
+p value = 0.322
+
+Since p = 0.322 > 0.05, we do not reject the null hypothesis.
+
+The alpha=0.05 corresponds with the 95% confidence interval, so we draw the same conclusion.
+
+# Problem 5
+
+```{r}
+x <- c(9.6,4.5,13.2,4.1,22.6,2.7,14.7,3.5,13.6,19.8,14.3,56.9,25.1,18.4,2.7,4.2,30.2,10.3,17.6,2.4,17.3,38.8,3.0,5.8,7.6)
+
+t.test(x, mu = 15, conf.level=0.9)
+```
+
+$t < \frac{10.08-14}{\frac{12.96}{5}} + t > \frac{18.95-14}{\frac{12.96}{5}}$
+
+$=t<-1.51 + t > 1.91$
+
+$= 0.072 + 0.034 =  0.16$
+
+# Problem 6
+```{r}
+x <- c(.618,.591,.225,.375)
+y <- c(.270,.241,.205,.523,.112,.330,.270,.239)
+
+t.test(x,y)
+```
+
+Since p > 0.05, we accept the null hypothesis and conclude the mean oxion/thion ratios are equal for cloudy/clear and foggy days.
+
+# Problem 7
+```{r}
+data <- read.csv("GASTURBINE.csv")
+x = data[data$ENGINE == 'Traditional',]
+y = data[data$ENGINE == "Aeroderiv",]
+
+var.test(x$HEATRATE, y$HEATRATE)
+
+x = data[data$ENGINE == "Advanced",]
+y = data[data$ENGINE == "Aeroderiv",]
+var.test(x$HEATRATE, y$HEATRATE)
+```
+
+Since there is sufficient evidence of the variances being different in both cases of traditional vs aeroderivative and advanced vs aeroderivative, the t-test assumption of equal population variances is not valid.
+
+# Problem 8
+
+Ho = Variances are equal
+Ha = Variances are not equal
+
+
+```{r}
+data <- read.csv("GOBIANTS.csv")
+x = data[data$REGION == "Dry Steppe",]
+y = data[data$REGION == "Gobi Desert",]
+
+var.test(x$ANTSPECIES,y$ANTSPECIES)
+
+```
+Rejection area = 0.2736
+
+p value = .7264
+
+Since p = .7264 > 0.05 we fail to reject the mull hypothesis. The variances of the number of ant species is approximately equal.
+
+We assume that the samples are both from Gaussian populations.
+
+# Problem 9
+
+```{r}
+x <- c(185.4, 146.3, 174.4, 184.9, 240.0, 253.8, 238.8, 263.5)
+
+y<- c(180.4, 248.5, 185.5, 216.4, 269.3, 249.6, 282.0, 315.9)
+
+t.test(x,y,paired=TRUE)
+```
+
+Since p < .05, we reject the null hypothesis. and conclude that the automated throughput time is greater than that of the human scheduler time.
+
+
+# Problem 10
+
+```{r}
+library(viridis)
+set.seed(35); sam<-round(rnorm(30,mean=20,sd=3),3)
+
+myboot<-function(iter=10000,x,fun="mean",alpha=0.05,...){  #Notice where the ... is repeated in the code
+  
+
+n=length(x)   #sample size
+
+y=sample(x,n*iter,replace=TRUE)
+
+
+t.test(x)
+t=t.test(x)$statistic
+cit = t.test(x)$conf.int
+
+rs.mat=matrix(y,nr=n,nc=iter,byrow=TRUE)
+xstat=apply(rs.mat,2,fun) # xstat is a vector and will have iter values in it 
+ci=quantile(xstat,c(alpha/2,1-alpha/2))# Nice way to form a confidence interval
+
+
+fun_color_range <- colorRampPalette(c("yellow", "violet"))
+my_colors <- fun_color_range(20) 
+
+
+# A histogram follows
+# The object para will contain the parameters used to make the histogram
+para=hist(xstat,freq=FALSE,las=1, col=my_colors,
+main=paste("Histogram of Bootstrap sample statistics","\n","alpha=",alpha," iter=",iter,sep=""), 
+...)
+
+#mat will be a matrix that contains the data, this is done so that I can use apply()
+mat=matrix(x,nr=length(x),nc=1,byrow=TRUE)
+
+
+
+
+
+
+#pte is the point estimate
+#This uses whatever fun is
+pte=apply(mat,2,fun)
+abline(v=pte,lwd=3,col="Black")# Vertical line
+segments(ci[1],0,ci[2],0,lwd=4)      #Make the segment for the ci
+text(ci[1],0,paste("(",round(ci[1],2),sep=""),col="Red",cex=3)
+text(ci[2],0,paste(round(ci[2],2),")",sep=""),col="Red",cex=3)
+
+text(cit[1],0.2,paste("(",round(cit[1],2),sep=""),col="Blue",cex=3)
+text(cit[2],0.2,paste(round(cit[2],2),")",sep=""),col="Blue",cex=3)
+
+# plot the point estimate 1/2 way up the density
+text(pte,max(para$density)/2,round(pte,2),cex=3)
+
+
+
+return(list(ci=ci,fun=fun,x=x,t=t,cit=cit))# Some output to use if necessary
+}
+
+myboot(iter=10000, sam, fun="mean", alpha=0.05)
+```
+
+
+
+
+
+1. MS 7.118 - pg 364
+2. MS 7.120 - pg 365
+3. MS 7.128 - pg 367
+4. MS 8.24 - pg 390
+5. MS 8.28 - pg 392
+6. MS 8.44 - pg 401
+7. MS 8.84 - pg 425 { This refers to 8.39 NOT 8.33!
+8. MS 8.99 - pg 438
+9. MS 8.104 - pg 439
+
+
+
+
+
+

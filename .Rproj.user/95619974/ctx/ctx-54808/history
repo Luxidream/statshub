@@ -1,0 +1,119 @@
+library(luxipackage)
+library(luxipackage)
+library(luxipackage)
+pacplot <- function(x){
+quad.lm$coef[1] +quad.lm$coef[2]*x  + quad.lm$coef[3]*x^2
+}
+library(luxipackage)
+?pacplot
+??pacplot
+library(luxipackage)
+?pacplot
+library(luxipackage)
+?luxipackage
+pacplot <- function(x){
+quad.lm$coef[1] +quad.lm$coef[2]*x  + quad.lm$coef[3]*x^2
+}
+library(luxipackage)
+#* Function package
+#*
+#* Contains an example function from Lab 4
+#*
+#* @docType package
+#*
+#* @author Dzuy Nguyen \email{dzuynguyen219@gmail.com}
+#*
+#* @name luxipackage
+?luxipackage
+#* Function package
+#*
+#* Contains an example function from Lab 4
+#*
+#* @docType package
+#*
+#* @author Dzuy Nguyen \email{dzuynguyen219@gmail.com}
+#*
+library(luxipackage)
+#* Myplot function to plot quadratic from coefficients
+#*
+#* @param x Numeric vector with three coefficients
+#*
+#* @return Vector with line to plot
+#*
+#* @examples N/A
+pacplot <- function(x){
+library(luxipackage)
+pacplot
+plot(pacplot)
+detach("package:luxipackage", unload = TRUE)
+library(luxipackage)
+library(luxipackage)
+library(luxipackage)
+library(luxipackage)
+library(luxipackage)
+library(luxipackage)
+library(luxipackage)
+library(luxipackage)
+pacplot <- function(x){
+quad.lm$coef[1] +quad.lm$coef[2]*x  + quad.lm$coef[3]*x^2
+}
+library(luxipackage)
+library(luxipackage)
+library(luxipackage)
+library(luxipackage)
+??pacplot
+?pacplot
+library(luxipackage)
+?bmi3
+library(luxipackage)
+?pacplot
+library(luxipackage)
+?pacplot
+library(luxipackage)
+dbinom(size=10, p=0.5)
+dbinom(x=6, size=10, p=0.5)
+ppbinom(x=6, size=10, p=0.5)
+pbinom(x=6, size=10, p=0.5)
+pbinom(6, size=10, p=0.5)
+1 - pbinom(6, size=10, p=0.5)
+dbinom(x=4, size=10, p=0.5) + dbinom(x=5, size=10, p=0.5) + dbinom(x=6, size=10, p=0.5)
+pbinom(7, size=10, p=0.5)
+library(luxipackage)
+library(luxipackage)
+library(luxipackage)
+library(luxipackage)
+library(luxipackage)
+CPU = read.csv("CPU.csv")
+setwd("~/MATH 4753/Labs/Lab 1")
+CPU = read.csv("CPU.csv")
+head(CPU)
+pnorm(16, mean=15, sd=3) - pnorm(10, mean=15, sd=3, lower.tail=FALSE)
+library(luxipackage)
+plot(x_arr, f1(x_arr), type="b", ,lwd=2, pch=19, xlab="n", ylab="objective")
+x_arr = (n-10):(n+10)
+n =200
+gamma=0.02
+n =200
+p=0.95
+f1 <- function(x) {abs((qbinom(1-gamma, x, p)-200))}
+f2 <- function(x) {abs((qnorm(1-gamma, x*p, (x*p*(1-p))^0.5)-(n+0.5)))}
+opt1 = optimize(f1, interval=c(0,n*2))
+opt2 = optimize(f2, interval=c(0,n*2))
+matcher = opt1$minimum
+matcher2= opt2$minimum
+abs((qbinom(1-gamma, 205, p)-200))
+abs((qbinom(1-gamma, 204, p)-200))
+x_arr = (n-10):(n+10)
+x_arr
+plot(x_arr, f1(x_arr), type="b", ,lwd=2, pch=19, xlab="n", ylab="objective")
+abline(v=matcher, col="red")
+abline(h=0, col="red")
+curve(f2,xlim=c(n-10,n+10),ylim=c(0,n/2),col="black",lwd=2,
+ylab="Objective", main="Objective vs. n")
+abline(v=matcher2, col="blue")
+abline(h=0, col="blue")
+my_list = list(nd=matcher, nc=matcher2, N=n, p=p, gamma = gamma)
+my_list
+library(luxipackage)
+luxipackage::ntickets(200,.02,.95)
+library(luxipackage)

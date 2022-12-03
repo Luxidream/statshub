@@ -1,0 +1,252 @@
+---
+title: "MATH 4753 Project 2"
+author: "Dzuy Nguyen"
+date:  "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  html_document:
+    code_folding: show
+    csl: biomed-central.csl
+    df_print: paged
+    fig_caption: yes
+    fig_height: 6
+    fig_width: 7
+    number_sections: yes
+    theme: journal
+    toc: yes
+    toc_float: yes
+  word_document:
+    toc: yes
+    toc_depth: 4
+  pdf_document:
+    df_print: kable
+    fig_caption: yes
+    fig_height: 6
+    fig_width: 7
+    highlight: tango
+    toc: yes
+    toc_depth: 4
+bibliography: project.bib
+abstract: This project investigates BIRDDEN, a dataset of 21 observations that examines the density of bird populations relative to the amount of vegetation cover. The original researchers determined that the use of a linear model was appropriate for the data. We create our own linear model and check the assumptions for simple linear regression. We determine that the requirements for using simple linear regression have not been met, since the residuals are non-normal. The experiment should be improved by increasing the sample size or using a nonlinear regression scheme, which is beyond the scope of this project.
+---
+
+
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(leaflet)
+library(dplyr)
+```
+
+# Introduction
+
+Bird migration is a well-documented phenomenon in which birds travel long distances, sometimes across oceans. Bird migration is primarily motivated by the food, or lack of, in winter.
+
+When bird migration takes place over land, it is often facilitated by so-called "green corridors", which are linear areas of high vegetation that allow birds to find food during the way. Buelow et al. (2016) states that the nearby landscape and forest type has a significant impact on the bird type and number. Liu et al. (2020) investigates green corridors that connect urban parks with natural areas of vegetation, and determined that these corridors are essential to bird migration and correspond directly with eBird record abundance data.
+
+<center>
+![Fig 1. Global bird migration paths](fig2.png "Fig 1. Global bird migration paths")
+
+</center>
+
+Since migration can be a costly process for bird populations, urbanization poses a serious threat to bird population in China and around the world. Therefore, maintaining existing green corridors and supplementing them with vegetation close to cities is essential to preserve the ecosystem and protect vulnerable birds as they migrate.
+
+<center>
+
+
+
+![Fig 2. An example of a bird migration path near the Shenzen river in China](fig1.png "Fig 2. An example of a bird migration path near the Shenzen river in China")
+
+
+</center>
+
+## Data source
+
+Our data is from an unnamed paper in Landscape Ecology Engineering (Jan 2013) that investigates green corridors in China and the bird populations supported by them. While we do not have access to the paper, Mendenhall and Sincich (2015) provides us with a table from the paper that gives discrete values of the bird density and vegetation cover for 21 randomly selected Chinese green areas. Bird density is given in units of birds by hectare, and vegetation cover is given as a percentage of land coverage.
+
+
+## Research questions
+
+In order to maintain sufficient vegetation for a stable bird population in urban green areas, we would like to create a model to predict the bird density given the vegetation levels. According to Mendenhall and Sincich (2015), the researchers used a linear model to make predictions about birds in green areas. In this report, we will investigate the validity of creating such a linear model, and will use simple linear regression to replicate the model used. Is the use of a linear model in this case valid, and can we use it to make predictions about the bird population?
+
+# Data visualization
+
+Here, we display a table of the raw data used for your convenience, as well as a scatter plot. No analysis has been performed.
+
+```{r datacars, echo=FALSE}
+
+birdden = read.csv("BIRDDEN.csv")
+birdden
+
+```
+
+<center>
+
+Table 1. Table of bird density and vegetation cover percentages.
+
+</center>
+
+```{r birdcharacteristics, fig.height = 5, fig.cap = "",fig.align='center',fig.cap="Fig 3. Graph of bird density vs vegetation percentage", echo=FALSE, warning=FALSE}
+library(ggplot2)
+g = ggplot(birdden, aes(x = COVER, y=DENSITY)) + geom_point()
+g
+```
+
+
+# Methodology
+To analyze this data, we attempt to employ a form of regression called simple linear regression (SLR). SLR is used when a single independent variable has a linear relationship with a dependent variable. The SLR model takes the following form:
+
+$$y = \beta_{0}+\beta_{1}x + \epsilon$$
+
+where $\beta_{0}$ and $\beta_{1}$ are model parameters and $\epsilon$ is a random error term. To estimate the values of $\beta_{0}$ and $\beta_{1}$, we use the least squares method.
+
+For simple linear regression to produce valid inferences, four assumptions must be true.
+
+Assumption 1: The mean of $\epsilon$ must be zero. This reduces the equation for the expected value of Y to:
+
+$$y = \beta_{0}+\beta_{1}x$$
+
+Assumption 2: The variance of $\epsilon$ must be a constant that does not vary with x.
+
+Assumption 3: The distribution of $\epsilon$ must be normally distributed.
+
+Assumption 4: All values of $\epsilon$ are independent.
+
+We will examine each of these assumptions in turn.
+
+# Analysis
+
+## Linear model derived by researchers
+
+First, we present the linear model that would have been derived by the researchers using least-squares regression. Then, we will analyze the assumptions to check if the linear model is valid.
+
+```{r}
+simple.fit = lm(DENSITY~COVER, data=birdden)
+summary(simple.fit)
+
+g = ggplot(birdden, aes(x = COVER, y=DENSITY)) + geom_point() + geom_smooth(method=lm, se=FALSE)
+g
+```
+
+<center>
+
+Fig 4. Least squares regression line for vegetation cover and bird density.
+
+</center>
+
+In this model, ~42% of the variance in bird density is explained by the vegetation density. 
+
+In this model, for an increase of 1% in vegetation, bird density would increase by 0.18 birds per hectare.
+
+```{r}
+library(s20x)
+ciReg(simple.fit, conf.level=0.95)
+```
+
+95% of confidence intervals created using this population would have a $\beta_{1}$ value from 0.08 to 0.28.
+
+95% of confidence intervals created using this population would have a $\beta_{0}$ value between -5.1 and 4.5.
+
+
+## Assumptions
+
+### Assumption 4
+
+We assume independence in the bird density for each site examined by the study. If two sites were in close proximity with one another, it is possible they could influence the bird population of other sites, but we were not provided with information that would suggest that is the case. 
+
+### Assumptions 1, 2, and 3
+
+Assumptions 1, 2, 3 can be satisfied provided that the errors are approximately normally distributed with a mean of 0, a constant variance $\sigma^2$. 
+
+We investigate if the errors are normal by creating a linear model in R, obtaining the residuals, determining the mean and variance of the residuals, followed by creating a quantile-quantile (QQ) plot and using Shapiro-Wilkes testing to demonstrate normality.
+
+```{r}
+simple.fit = lm(DENSITY~COVER, data=birdden)
+
+
+residuals = residuals(simple.fit)
+mean(residuals)
+var(residuals)
+
+
+```
+
+Assumptions 1 and 2 are satisfied. The mean of the residuals $\sim 0$ and the variance is constant. We now check for Assumption 3, normality of the residuals. The QQ plot compares a distribution to the normal. We use the QQ plot as a visual, as adherence to the trend line in the QQ plot indicates normality. We then use the Shapiro Wilkes test at 95% confidence or $\alpha=0.05$ to verify our intuition.
+
+```{r,echo=FALSE, warning=FALSE, message=FALSE}
+options(warn = -1)
+library(ggpubr)
+library(car)
+ggqqplot(residuals)
+
+shapiro.test(residuals)
+
+
+n <- nrow(birdden)
+
+```
+
+<center>
+
+Fig 5. QQ plot of residuals and Shapiro test result.
+
+</center>
+
+The output of the QQ plot suggests that the data is not normal. Several points deviate from the trend line.
+
+The p-value of the Shapiro-Wilkes test is less than $\alpha = 0.05$. This suggests that we reject the null hypothesis of the Shapiro-Wilkes test and that the data is not normal. Therefore, Assumption 3 is not met.
+
+### Outlier analysis
+
+It is possible that one or more outliers in the data set caused the residuals to be non-normal. To determine outliers, we use Cook's distance with a cutoff rate of 4/n. The below plot is a plot of Cook's distance for all points.
+
+```{r,echo=FALSE, message=FALSE}
+plot(cooks.distance(simple.fit))
+abline(h = 4/n, lty = 2, col = "steelblue")
+cooksD <- cooks.distance(simple.fit)
+
+```
+
+<center>
+
+Fig 6. Cook's distance plot
+
+</center>
+
+We can see that in our plot of Cook's distance, three points exceed our breakpoint of 4/n. We display them below.
+```{r, echo=FALSE}
+influential_obs <- as.numeric(names(cooksD)[(cooksD > (4/n))])
+
+birdden[influential_obs,]
+```
+
+<center>
+
+Table 2. Outliers
+
+</center>
+
+
+These points are unlikely to have arisen out of a source of non-sampling error such as a data entry mistake or duplication because two points are high and one point is low, and since all samples were taken in China, they are unlikely to represent any other bird population. Therefore, it would not be valid to remove these points. 
+
+The best solution for the researchers would be increasing the number of samples such that the central limit theorem would be applicable to the residuals (n>30). The central limit theorem states that the sample means will approach normality as the sample size increases.
+
+# Conclusion
+
+We determined that a linear model was a poor fit for this dataset. Attempting to remove outliers would remove several data points and call our conclusions into question.
+
+To improve the experiment, more data points should be collected. We can assume normality using the central limit theorem (CLT) if we have 30 or more points.
+
+Considering the points with a very large bird population, it is possible that a nonlinear relationship exists between bird density and vegetation density. However, the linear model posited by the researchers is not valid.
+
+# References
+
+Buelow, C. A., Baker, R., Reside, A. E., &amp; Sheaves, M. (2016). Spatial Dynamics of coastal forest bird assemblages: The influence of landscape context, forest type, and structural connectivity. Landscape Ecology, 32(3), 547–561. https://doi.org/10.1007/s10980-016-0461-z 
+
+Liu, Z., Huang, Q., &amp; Tang, G. (2020). Identification of urban flight corridors for migratory birds in the coastal regions of Shenzhen City based on three-dimensional landscapes. Landscape Ecology, 36(7), 2043–2057. https://doi.org/10.1007/s10980-020-01032-6 
+
+Mendenhall, W., &amp; Sincich, T. (2015). Statistics for engineering and the Sciences. Prentice Hall. 
+
+
+

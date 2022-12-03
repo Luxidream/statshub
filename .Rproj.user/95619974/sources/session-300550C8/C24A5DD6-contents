@@ -1,0 +1,20 @@
+---
+title: 'Project 2'
+author: "Dzuy Nguyen"
+date: '`r format(Sys.Date(),format="%A, %B %d, %Y")`'
+output: 
+  html_document:
+    fig_caption: true
+    highlights: pygments
+    number_sections: no
+    theme: spacelab
+    toc: yes
+    toc_float: yes
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Computer scientists are often interested in the computation time of jobs. This computation time is often affected by software and hardware limitations. An initiator is a piece of hardware that starts job processing and often plays a significant role 

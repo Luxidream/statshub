@@ -1,0 +1,70 @@
+#' ntickets
+#'
+#' Calculates number of airline tickets to sell using continuous and discrete distributions.
+#' Minimizes the absolute value
+#'
+#' @param n The number of seats
+#' @param gamma Chance of overbooking
+#' @param p Chance of passengers taking seats
+#'
+#' @importFrom graphics abline
+#' @importFrom graphics curve
+#' @importFrom graphics layout
+#' @importFrom stats optimize
+#' @importFrom stats qbinom
+#' @importFrom stats qnorm
+#'
+#' @return List of n, p, gamma, and calculated values with continuous and discrete distributions.
+#'
+#' @examples ntickets(200, .02, .95)
+#'
+#'
+#' @export
+
+ntickets = function(n, gamma, p){
+
+
+  f1 <- function(x) {abs((qbinom(1-gamma, x, p)-n))}
+  f2 <- function(x) {abs((qnorm(1-gamma, x*p, (x*p*(1-p))^0.5)-(n+0.5)))}
+
+  opt1 = optimize(f1, interval=c(0,n*2))
+  opt2 = optimize(f2, interval=c(0,n*2))
+
+
+  matcher = round(opt1$minimum)
+  matcher2= opt2$minimum
+
+
+  abs((qbinom(1-gamma, 205, p)-n))
+  abs((qbinom(1-gamma, 204, p)-n))
+
+  x_arr = (matcher-10):(matcher+10)
+
+  mat <-layout( matrix(c(1,2), ncol=1))
+  plot(x_arr, f1(x_arr), type="b", ,lwd=2, pch=19, xlab="n", ylab="objective", main="Objective vs. n")
+  abline(v=matcher, col="red")
+  abline(h=0, col="red")
+
+
+  curve(f2,xlim=c((matcher-10),(matcher+10) ),col="black",lwd=2, xlab="n",
+        ylab="Objective", main="Objective vs. n")
+  abline(v=matcher2, col="blue")
+  abline(h=0, col="blue")
+
+
+  my_list = list(nd=matcher, nc=matcher2, N=n, p=p, gamma = gamma)
+
+  my_list
+  return(my_list)
+
+}
+
+#── R CMD check results ────────────────────────────────────────────────────── luxipackage 0.1.0 ────
+#Duration: 15.2s
+#0 errors ✔ | 0 warnings ✔ | 0 notes ✔
+#R CMD check succeeded
+
+
+
+
+
